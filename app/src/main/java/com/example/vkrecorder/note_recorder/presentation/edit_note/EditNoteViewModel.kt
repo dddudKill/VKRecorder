@@ -8,6 +8,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.vkrecorder.R
 import com.example.vkrecorder.note_recorder.domain.model.InvalidNoteException
 import com.example.vkrecorder.note_recorder.domain.model.Note
 import com.example.vkrecorder.note_recorder.domain.use_cases.note_use_cases.NoteUseCases
@@ -71,7 +72,8 @@ class EditNoteViewModel @Inject constructor(
             }
             is EditNoteEvent.NoteRecordingStarted -> {
                 val outputDir = context.cacheDir
-                val outputFile = File.createTempFile("recording", ".3gp", outputDir)
+                val outputFile = File.createTempFile(context.getString(R.string.recording_prefix), context.getString(
+                                    R.string.recording_postfix), outputDir)
                 currentRecordingPath = outputFile.absolutePath
                 androidAudioRecorder.start(outputFile)
             }
@@ -79,7 +81,7 @@ class EditNoteViewModel @Inject constructor(
                 androidAudioRecorder.stop()
             }
             is EditNoteEvent.NoteRecordingPaused -> {
-                androidAudioRecorder
+                //androidAudioRecorder
             }
             is EditNoteEvent.ChangeTitleFocus -> {
                 _noteTitle.value = noteTitle.value.copy(
@@ -95,7 +97,8 @@ class EditNoteViewModel @Inject constructor(
                         val recordingsDir = context.getExternalFilesDir(Environment.DIRECTORY_MUSIC)?.absolutePath
                         val recordingFile = File(recordingsDir, fileName)
 
-                        val cacheFile = File(currentRecordingPath ?: throw InvalidNoteException("Вы не сделали запись"))
+                        val cacheFile = File(currentRecordingPath ?: throw InvalidNoteException(context.getString(
+                                                    R.string.recording_not_made_exception)))
                         if (cacheFile.exists()) {
                             cacheFile.copyTo(recordingFile, overwrite = true)
                             cacheFile.delete()
@@ -110,14 +113,15 @@ class EditNoteViewModel @Inject constructor(
                                 timestamp = currentTimestamp,
                                 length = androidAudioRecorder.getRecordedAudioFileLength(currentRecordingPath ?: throw InvalidNoteException("Вы не сделали запись")),
                                 id = currentNoteId,
-                                path = currentRecordingPath ?: throw InvalidNoteException("Вы не сделали запись")
+                                path = currentRecordingPath ?: throw InvalidNoteException(context.getString(
+                                    R.string.recording_not_made_exception))
                             )
                         )
                         _eventFlow.emit(UiEvent.SaveNote)
                     } catch (e: InvalidNoteException) {
                         _eventFlow.emit(
                             UiEvent.ShowSnackbar(
-                                message = e.message ?: "Не удалось сохранить запись"
+                                message = e.message ?: context.getString(R.string.unknown_error)
                             )
                         )
                     }

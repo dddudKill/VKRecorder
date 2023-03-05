@@ -4,7 +4,9 @@ import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import com.example.vkrecorder.R
 
 @Composable
@@ -17,7 +19,8 @@ fun AuthButton(
     ) {
         Icon(
             painter = painterResource(id = R.drawable.vk_compact_logo),
-            contentDescription = "Вконтакте"
+            tint = Color.Unspecified,
+            contentDescription = stringResource(R.string.vk_description)
         )
     }
 }

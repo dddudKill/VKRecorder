@@ -12,9 +12,11 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.vkrecorder.R
 import com.example.vkrecorder.note_recorder.presentation.edit_note.EditNoteEvent
 import com.example.vkrecorder.note_recorder.presentation.edit_note.EditNoteViewModel
 import kotlinx.coroutines.flow.collectLatest
@@ -55,12 +57,12 @@ fun EditNoteScreen(
             FloatingActionButton(
                 onClick = {
                     buttonClickedState = true
-                    viewModel.onEvent(EditNoteEvent.SaveNote)
                     if (isRecording) viewModel.onEvent(EditNoteEvent.NoteRecordingStopped)
+                    viewModel.onEvent(EditNoteEvent.SaveNote)
                 },
                 backgroundColor = MaterialTheme.colors.primary
             ) {
-                Icon(imageVector = Icons.Default.Save, contentDescription = "Сохранить")
+                Icon(imageVector = Icons.Default.Save, contentDescription = stringResource(R.string.save))
             }
         },
         scaffoldState = scaffoldState

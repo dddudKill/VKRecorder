@@ -9,7 +9,9 @@ import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.example.vkrecorder.R
 
 @Composable
 fun RecordButton(
@@ -37,7 +39,7 @@ fun RecordButton(
             IconButton(onStopClick) {
                 Icon(
                     imageVector = Icons.Default.StopCircle,
-                    contentDescription = "Закончить запись",
+                    contentDescription = stringResource(R.string.stop_recording),
                     modifier = Modifier.size(160.dp),
                     tint = MaterialTheme.colors.primary
                 )
@@ -46,7 +48,7 @@ fun RecordButton(
             IconButton(onRecordClick) {
                 Icon(
                     imageVector = Icons.Default.Mic,
-                    contentDescription = "Начать запись",
+                    contentDescription = stringResource(R.string.start_recording),
                     modifier = Modifier.size(160.dp),
                     tint = MaterialTheme.colors.primary
                 )

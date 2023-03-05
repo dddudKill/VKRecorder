@@ -9,7 +9,9 @@ import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Stop
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.example.vkrecorder.R
 
 @Composable
 fun PlayButton(isPlaying: Boolean, onClick: () -> Unit) {
@@ -21,7 +23,7 @@ fun PlayButton(isPlaying: Boolean, onClick: () -> Unit) {
     IconButton(onClick) {
         Icon(
             imageVector = imageVector,
-            contentDescription = if (isPlaying) "Пауза" else "Воспроизвести",
+            contentDescription = if (isPlaying) stringResource(R.string.pause) else stringResource(R.string.play),
             modifier = Modifier.size(48.dp),
             tint = MaterialTheme.colors.onPrimary
         )

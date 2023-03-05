@@ -18,6 +18,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 
+
+// Не используется
 @Composable
 fun RecordStopButton(
     onStop: () -> Unit,
