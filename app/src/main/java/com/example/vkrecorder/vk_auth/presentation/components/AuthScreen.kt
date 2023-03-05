@@ -11,6 +11,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -69,7 +70,7 @@ fun AuthScreen(
                     ) {
                         Image(
                             painter = painterResource(id = R.drawable.vk_logo_blue_160x160),
-                            contentDescription = "VKRecorder"
+                            contentDescription = stringResource(R.string.vk_recorder_description)
                         )
                         Spacer(modifier = Modifier.height(120.dp))
                         Column(
@@ -77,7 +78,7 @@ fun AuthScreen(
                             verticalArrangement = Arrangement.Top,
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            Text(text = "Войти с помощью", style = MaterialTheme.typography.body1)
+                            Text(text = stringResource(R.string.log_ig_with), style = MaterialTheme.typography.body1)
                             Spacer(modifier = Modifier.height(20.dp))
                             AuthButton {
                                 scope.launch {

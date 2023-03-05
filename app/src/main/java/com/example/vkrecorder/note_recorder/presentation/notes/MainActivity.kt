@@ -69,10 +69,6 @@ class MainActivity : ComponentActivity() {
     }
 
     companion object {
-        private const val TAG = "MainActivity"
-
-        private const val IMAGE_REQ_CODE = 101
-
         fun startFrom(context: Context) {
             val intent = Intent(context, MainActivity::class.java)
             context.startActivity(intent)

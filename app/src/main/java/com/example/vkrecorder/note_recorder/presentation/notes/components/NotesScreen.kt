@@ -1,5 +1,6 @@
 package com.example.vkrecorder.note_recorder.presentation.notes.components
 
+import android.content.res.Resources
 import android.util.Log
 import androidx.compose.animation.*
 import androidx.compose.foundation.clickable
@@ -17,9 +18,11 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.vkrecorder.R
 import com.example.vkrecorder.note_recorder.domain.model.Note
 import com.example.vkrecorder.note_recorder.presentation.notes.NotesEvent
 import com.example.vkrecorder.note_recorder.presentation.notes.NotesViewModel
@@ -34,7 +37,6 @@ fun NotesScreen(
     viewModel: NotesViewModel = hiltViewModel(),
     onLogOut: () -> Unit
 ) {
-    Log.d("NotesScreen", "Recomposed")
     val state = viewModel.state.value
     val currentTime = viewModel.currentTime.collectAsState()
     val scaffoldState = rememberScaffoldState()
@@ -54,7 +56,7 @@ fun NotesScreen(
             ) {
                 Icon(
                     Icons.Default.Add,
-                    contentDescription = "Добавить запись"
+                    contentDescription = stringResource(R.string.add_recording)
                 )
             }
         },
@@ -71,7 +73,7 @@ fun NotesScreen(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "Ваши записи",
+                    text = stringResource(R.string.your_recordings),
                     style = MaterialTheme.typography.h1
                 )
                 Row(
@@ -83,7 +85,7 @@ fun NotesScreen(
                     ) {
                         Icon(
                             imageVector = Icons.Default.Logout,
-                            contentDescription = "Выйти"
+                            contentDescription = stringResource(R.string.log_out)
                         )
                     }
                     IconButton(
@@ -93,7 +95,7 @@ fun NotesScreen(
                     ) {
                         Icon(
                             imageVector = Icons.Default.Sort,
-                            contentDescription = "Фильтр"
+                            contentDescription = stringResource(R.string.filters)
                         )
                     }
                 }
@@ -133,8 +135,8 @@ fun NotesScreen(
                             viewModel.onEvent(NotesEvent.DeleteNote(note))
                             scope.launch {
                                 val result = scaffoldState.snackbarHostState.showSnackbar(
-                                    message = "Запись удалена",
-                                    actionLabel = "Отменить"
+                                    message = Resources.getSystem().getString(R.string.recording_deleted),
+                                    actionLabel = Resources.getSystem().getString(R.string.cancel)
                                 )
                                 if (result == SnackbarResult.ActionPerformed) {
                                     viewModel.onEvent(NotesEvent.RestoreNote)

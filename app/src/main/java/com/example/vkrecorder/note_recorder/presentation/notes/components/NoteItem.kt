@@ -6,23 +6,17 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.PlayArrow
-import androidx.compose.material.icons.filled.PlayCircleFilled
-import androidx.compose.material.icons.filled.Stop
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.vkrecorder.R
 import com.example.vkrecorder.note_recorder.domain.model.Note
-import com.example.vkrecorder.note_recorder.domain.record.AndroidAudioRecorder
-import com.example.vkrecorder.note_recorder.presentation.notes.NotesEvent
-import com.example.vkrecorder.note_recorder.presentation.notes.NotesViewModel
-import java.io.File
+import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -67,13 +61,20 @@ fun NoteItem(
                         horizontalArrangement = Arrangement.Start,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text(text = note.title, style = MaterialTheme.typography.h2)
+                        Text(
+                            modifier = Modifier
+                                .width(120.dp),
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            text = note.title,
+                            style = MaterialTheme.typography.h2
+                        )
                         IconButton(
                             onClick = onDeleteClick
                         ) {
                             Icon(
                                 Icons.Default.Delete,
-                                contentDescription = "Удалить",
+                                contentDescription = stringResource(R.string.delete),
                                 modifier = Modifier.size(24.dp),
                                 tint = MaterialTheme.colors.primary)
                         }
@@ -85,13 +86,13 @@ fun NoteItem(
 
                         val minutes = note.length / 1000 / 60
                         val seconds = note.length / 1000 % 60
-                        val formattedTime = String.format("%02d:%02d", minutes, seconds)
+                        val formattedTime = String.format(stringResource(R.string.time_format), minutes, seconds)
 
                         if (isPlaying && currentTime != null) {
                             val minutesCurrent = currentTime / 1000 / 60
                             val secondsCurrent = currentTime / 1000 % 60
 
-                            val formattedCurrentTime = String.format("%02d:%02d", minutesCurrent, secondsCurrent)
+                            val formattedCurrentTime = String.format(stringResource(R.string.time_format), minutesCurrent, secondsCurrent)
 
                             Text("$formattedCurrentTime / ", style = MaterialTheme.typography.body1)
                         }
@@ -121,11 +122,38 @@ fun NoteItem(
                     }
                 }
                 val date = Date(note.timestamp)
-                Text(text = date.toString(), style = MaterialTheme.typography.body2)
+                val dateFormat = if (isToday(date)) {
+                    SimpleDateFormat(stringResource(R.string.today_date_format) ,Locale("ru", "RU"))
+                } else if (isYesterday(date)) {
+                    SimpleDateFormat(stringResource(R.string.yesterday_date_format), Locale("ru", "RU"))
+                } else {
+                    SimpleDateFormat(stringResource(R.string.any_date_format), Locale("ru", "RU"))
+                }
+                Text(text = dateFormat.format(date), style = MaterialTheme.typography.body2)
             }
         }
         currentTime?.let {
             if (isPlaying) PlaybackProgressIndicator(modifier = Modifier.fillMaxWidth(), currentTime = it, duration = note.length)
         }
     }
+}
+
+fun isToday(date: Date): Boolean {
+    val calendar = Calendar.getInstance()
+    val today = calendar.time
+    calendar.add(Calendar.DAY_OF_YEAR, -1)
+    val yesterday = calendar.time
+    return date >= yesterday && date < today
+}
+
+fun isYesterday(date: Date): Boolean {
+    val calendar = Calendar.getInstance()
+    calendar.time = date
+    calendar.add(Calendar.DAY_OF_MONTH, 1)
+    val tomorrow = calendar.time
+    calendar.add(Calendar.DAY_OF_MONTH, -2)
+    val yesterday = calendar.time
+    val today = Date()
+
+    return today.after(yesterday) && today.before(tomorrow)
 }

@@ -54,7 +54,6 @@ class WelcomeActivity : ComponentActivity() {
                 Surface(
                     color = MaterialTheme.colors.background
                 ) {
-                    Log.d("welcome", "Welcome")
                     AuthScreen(
                         onVKClick = {
                             authLauncher.launch(SCOPES)
